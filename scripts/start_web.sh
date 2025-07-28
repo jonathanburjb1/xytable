@@ -1,6 +1,9 @@
 #!/bin/bash
 # Start Web Development Servers
 # This script starts both the FastAPI backend and React frontend
+# Usage: ./start_web.sh [release] [port]
+#   release: set to 'release' for production mode
+#   port: optional port number (default: 8000)
 
 set -e
 
@@ -17,14 +20,23 @@ print_status() {
     echo -e "${color}${message}${NC}"
 }
 
+# Parse command line arguments
+RELEASE_MODE=${1:-""}
+PORT=${2:-8000}
+
 # Check if we're in the right directory
 if [ ! -f "setup.py" ]; then
     print_status $RED "Error: Please run this script from the project root directory"
     exit 1
 fi
 
-print_status $BLUE "Starting X-Y Table Web Development Servers"
-echo "=================================================="
+if [ "$RELEASE_MODE" = "release" ]; then
+    print_status $BLUE "Starting X-Y Table Web Servers in RELEASE MODE"
+    echo "=================================================="
+else
+    print_status $BLUE "Starting X-Y Table Web Development Servers"
+    echo "=================================================="
+fi
 
 # Function to cleanup background processes on exit
 cleanup() {
@@ -103,8 +115,13 @@ fi
 cd ..
 
 # Start backend server with system Python
-print_status $BLUE "Starting FastAPI backend server (using system Python)..."
-python3 -m uvicorn webapi.main:app --host 0.0.0.0 --port 8000 --reload &
+if [ "$RELEASE_MODE" = "release" ]; then
+    print_status $BLUE "Starting FastAPI backend server in PRODUCTION mode (using system Python)..."
+    python3 -m uvicorn webapi.main:app --host 0.0.0.0 --port $PORT &
+else
+    print_status $BLUE "Starting FastAPI backend server in DEVELOPMENT mode (using system Python)..."
+    python3 -m uvicorn webapi.main:app --host 0.0.0.0 --port $PORT --reload &
+fi
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
@@ -112,18 +129,29 @@ sleep 2
 
 # Check if backend started successfully
 if kill -0 $BACKEND_PID 2>/dev/null; then
-    print_status $GREEN "✓ Backend server started on http://localhost:8000"
+    print_status $GREEN "✓ Backend server started on http://localhost:$PORT"
 else
     print_status $RED "✗ Failed to start backend server"
     exit 1
 fi
 
 # Start frontend server
-print_status $BLUE "Starting React frontend server..."
-cd frontend/
-npm start &
-FRONTEND_PID=$!
-cd ..
+if [ "$RELEASE_MODE" = "release" ]; then
+    print_status $BLUE "Starting React frontend server in PRODUCTION mode..."
+    cd frontend/
+    # Build the production version
+    npm run build
+    # Serve the built files
+    npx serve -s build -l 3000 &
+    FRONTEND_PID=$!
+    cd ..
+else
+    print_status $BLUE "Starting React frontend server in DEVELOPMENT mode..."
+    cd frontend/
+    npm start &
+    FRONTEND_PID=$!
+    cd ..
+fi
 
 # Wait a moment for frontend to start
 sleep 3
@@ -139,12 +167,16 @@ fi
 
 print_status $GREEN "=================================================="
 print_status $GREEN "Both servers are running!"
-print_status $BLUE "Backend API:  http://localhost:8000"
+print_status $BLUE "Backend API:  http://localhost:$PORT"
 print_status $BLUE "Frontend UI:  http://localhost:3000"
-print_status $BLUE "API Docs:     http://localhost:8000/docs"
+print_status $BLUE "API Docs:     http://localhost:$PORT/docs"
+if [ "$RELEASE_MODE" = "release" ]; then
+    print_status $YELLOW "Running in PRODUCTION mode"
+else
+    print_status $YELLOW "Running in DEVELOPMENT mode"
+fi
 print_status $YELLOW "Press Ctrl+C to stop both servers"
 echo ""
-
 
 # Wait for user to stop
 wait 
