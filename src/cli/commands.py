@@ -1,14 +1,14 @@
 """
 Command implementations for the X-Y Table Control System CLI.
 
-This module contains the actual implementations of movement and status commands.
+This module contains the actual implementations of movement and testing commands.
 """
 
 import logging
 from typing import Dict, Any, Optional
 
 from src.core.movement import MovementController
-from src.hardware.axis_manager import AxisManager
+
 from src.hardware.mesa_driver import MesaDriver
 
 
@@ -21,8 +21,7 @@ class MovementCommands:
         
         # Initialize hardware components
         try:
-            self.axis_manager = AxisManager(config_manager)
-            self.movement_controller = MovementController(config_manager, self.axis_manager)
+            self.movement_controller = MovementController(config_manager)
         except Exception as e:
             self.logger.error(f"Failed to initialize movement components: {e}")
             raise
@@ -178,70 +177,6 @@ class MovementCommands:
         finally:
             mesa_driver.disconnect()
 
-
-class StatusCommands:
-    """Handles status-related commands for the CLI."""
-    
-    def __init__(self, config_manager):
-        self.config = config_manager
-        self.logger = logging.getLogger(__name__)
-        
-        # Initialize hardware components
-        try:
-            self.axis_manager = AxisManager(config_manager)
-        except Exception as e:
-            self.logger.error(f"Failed to initialize status components: {e}")
-            raise
-    
-    def get_status(self) -> Dict[str, Any]:
-        """
-        Get current status and position of both axes.
-        
-        Returns:
-            Dictionary containing status information for X axis, Y axis, and system
-        """
-        self.logger.debug("Getting system status")
-        
-        try:
-            # Get axis status
-            x_status = self.axis_manager.get_axis_status('x')
-            y_status = self.axis_manager.get_axis_status('y')
-            
-            # Get system status
-            system_status = self.axis_manager.get_system_status()
-            
-            status_info = {
-                'x_axis': {
-                    'position': x_status.get('position', 'Unknown'),
-                    'status': x_status.get('status', 'Unknown'),
-                    'enabled': x_status.get('enabled', False),
-                    'in_position': x_status.get('in_position', False)
-                },
-                'y_axis': {
-                    'position': y_status.get('position', 'Unknown'),
-                    'status': y_status.get('status', 'Unknown'),
-                    'enabled': y_status.get('enabled', False),
-                    'in_position': y_status.get('in_position', False)
-                },
-                'system': {
-                    'connected': system_status.get('connected', False),
-                    'emergency_stop': system_status.get('emergency_stop', False),
-                    'limit_switches': system_status.get('limit_switches', {}),
-                    'error_state': system_status.get('error_state', False)
-                }
-            }
-            
-            self.logger.debug("Status retrieved successfully")
-            return status_info
-            
-        except Exception as e:
-            self.logger.error(f"Failed to get status: {e}")
-            # Return basic status with error information
-            return {
-                'x_axis': {'position': 'Error', 'status': 'Error', 'enabled': False, 'in_position': False},
-                'y_axis': {'position': 'Error', 'status': 'Error', 'enabled': False, 'in_position': False},
-                'system': {'connected': False, 'emergency_stop': False, 'limit_switches': {}, 'error_state': True}
-            }
 
 
 class MesaTestCommands:

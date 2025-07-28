@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.core.config import ConfigManager
 from src.utils.logging import setup_logging
-from src.cli.commands import MovementCommands, StatusCommands, MesaTestCommands
+from src.cli.commands import MovementCommands, MesaTestCommands
 
 
 @click.group()
@@ -48,7 +48,7 @@ def cli(ctx, config, verbose):
     
     # Initialize command objects
     ctx.obj['movement'] = MovementCommands(config_manager)
-    ctx.obj['status'] = StatusCommands(config_manager)
+
     ctx.obj['mesa_test'] = MesaTestCommands(config_manager)
 
 
@@ -139,21 +139,7 @@ def move_absolute(ctx, x_pos, y_pos):
         sys.exit(1)
 
 
-@cli.command()
-@click.pass_context
-def status(ctx):
-    """
-    Show current status and position of both axes.
-    """
-    try:
-        status_info = ctx.obj['status'].get_status()
-        click.echo("X-Y Table Status:")
-        click.echo(f"  X Axis: {status_info['x_axis']}")
-        click.echo(f"  Y Axis: {status_info['y_axis']}")
-        click.echo(f"  System: {status_info['system']}")
-    except Exception as e:
-        click.echo(f"Error getting status: {e}", err=True)
-        sys.exit(1)
+
 
 
 @cli.command()

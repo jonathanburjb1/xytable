@@ -15,16 +15,14 @@ from src.hardware.mesa_driver import MesaDriver
 class MovementController:
     """Controls movement operations for the X-Y table."""
     
-    def __init__(self, config_manager, axis_manager):
+    def __init__(self, config_manager):
         """
         Initialize the movement controller.
         
         Args:
             config_manager: Configuration manager instance
-            axis_manager: Axis manager instance
         """
         self.config = config_manager
-        self.axis_manager = axis_manager
         self.logger = logging.getLogger(__name__)
         
         # Movement state

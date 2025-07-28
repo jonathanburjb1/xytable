@@ -131,12 +131,7 @@ The FastAPI backend provides the following endpoints:
     "axis": "x"
   }
   ```
-- `POST /disable_axis` - Disable specified axis
-  ```json
-  {
-    "axis": "x"
-  }
-  ```
+
 
 ### Emergency Control
 - `POST /emergency_stop` - Emergency stop all movement

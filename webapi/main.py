@@ -14,7 +14,7 @@ import json
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.hardware.axis_manager import AxisManager
+
 from src.core.movement import MovementController
 from src.core.config import ConfigManager
 
@@ -32,7 +32,7 @@ logging.basicConfig(
 )
 
 # After logging.basicConfig(...)
-logging.getLogger("src.hardware.axis_manager").setLevel(logging.DEBUG)
+
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ app.add_middleware(
 
 # Global variables
 movement_controller: Optional[MovementController] = None
-axis_manager: Optional[AxisManager] = None
+
 config_manager: Optional[ConfigManager] = None
 is_connected = False
 
@@ -81,14 +81,7 @@ class MoveRequest(BaseModel):
             raise ValueError('Speed must be between 0 and 20 inches/sec')
         return v
 
-class AxisRequest(BaseModel):
-    axis: str
 
-    @validator('axis')
-    def validate_axis(cls, v):
-        if v not in ['x', 'y']:
-            raise ValueError('Axis must be "x" or "y"')
-        return v
 
 class PositionRequest(BaseModel):
     x: float
@@ -132,7 +125,7 @@ class ProgramListResponse(BaseModel):
 # --- Startup and Shutdown Events ---
 @app.on_event("startup")
 async def startup_event():
-    global movement_controller, axis_manager, config_manager, is_connected
+    global movement_controller, config_manager, is_connected
     
     try:
         # Load configuration
@@ -144,9 +137,8 @@ async def startup_event():
         config_manager = ConfigManager(str(config_path))
         logger.info("Configuration loaded successfully")
         
-        # Initialize AxisManager and MovementController
-        axis_manager = AxisManager(config_manager)
-        movement_controller = MovementController(config_manager, axis_manager)
+        # Initialize MovementController
+        movement_controller = MovementController(config_manager)
         
         # Try to connect
         try:
@@ -437,22 +429,6 @@ async def clear_emergency_stop():
     except Exception as e:
         logger.error(f"Error clearing emergency stop: {e}")
         raise HTTPException(status_code=500, detail=f"Clear emergency stop failed: {e}")
-
-@app.post("/disable_axis")
-async def disable_axis(req: AxisRequest):
-    """Disable specified axis"""
-    if not is_connected or not axis_manager:
-        raise HTTPException(status_code=503, detail="Mesa board not connected")
-    
-    try:
-        axis_manager.disable_axis(req.axis)
-        return {
-            "status": "ok",
-            "message": f"Disabled {req.axis.upper()} axis"
-        }
-    except Exception as e:
-        logger.error(f"Error disabling {req.axis} axis: {e}")
-        raise HTTPException(status_code=500, detail=f"Disable failed: {e}")
 
 @app.get("/limits")
 def get_table_limits():
