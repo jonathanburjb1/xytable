@@ -1,0 +1,700 @@
+.program-builder {
+  padding: 12px;
+  background: #1a0000;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(204, 0, 0, 0.3);
+  color: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.program-builder h2 {
+  margin-bottom: 12px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Program Status */
+.program-status {
+  background: #000000;
+  border: 2px solid #cc0000;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 12px;
+  transition: border-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.program-status h3 {
+  margin: 0 0 6px 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background: #1a0000;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  background: #cc0000;
+}
+
+.add-command-form {
+  background: #000000;
+  border: 1px solid #cc0000;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.add-command-form h3 {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-row select,
+.form-row input {
+  padding: 5px 8px;
+  background: #1a0000;
+  border: 1px solid #cc0000;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  min-width: 70px;
+  color: #ffffff;
+  /* Prevent scrollbars on input fields */
+  overflow: hidden;
+  resize: none;
+}
+
+.form-row select:focus,
+.form-row input:focus {
+  outline: none;
+  border-color: #ff3333;
+  box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.25);
+}
+
+.form-row select option {
+  background: #1a0000;
+  color: #ffffff;
+}
+
+.form-row input::placeholder {
+  color: #999999;
+}
+
+/* Prevent scrollbars on all input types */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  overflow: hidden;
+  resize: none;
+}
+
+/* Additional prevention for number inputs which can sometimes show scrollbars */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.add-btn {
+  padding: 5px 10px;
+  background: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover:not(:disabled) {
+  background: #ff3333;
+}
+
+.add-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.program-list {
+  background: #1a0000;
+  border: 1px solid #cc0000;
+  border-radius: 6px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.program-header {
+  background: #000000;
+  padding: 10px 12px;
+  border-bottom: 1px solid #cc0000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.program-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.selected-line-indicator {
+  color: #ffcc00;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.program-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.line-actions {
+  display: flex;
+  gap: 4px;
+  margin-right: 8px;
+  padding-right: 8px;
+  border-right: 1px solid #cc0000;
+}
+
+.program-controls {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.program-actions button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.execute-btn {
+  background: #cc0000;
+  color: white;
+}
+
+.execute-btn:hover:not(:disabled) {
+  background: #ff3333;
+}
+
+.execute-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.execute-single-btn {
+  background: #0066cc;
+  color: white;
+}
+
+.execute-single-btn:hover:not(:disabled) {
+  background: #3399ff;
+}
+
+.execute-single-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.pause-btn {
+  background: #ff6600;
+  color: #ffffff;
+}
+
+.pause-btn:hover:not(:disabled) {
+  background: #ff9933;
+}
+
+.resume-btn {
+  background: #00cc00;
+  color: white;
+}
+
+.resume-btn:hover:not(:disabled) {
+  background: #33ff33;
+}
+
+.stop-btn {
+  background: #cc0000;
+  color: white;
+}
+
+.stop-btn:hover:not(:disabled) {
+  background: #ff0000;
+}
+
+.clear-btn {
+  background: #cc0000;
+  color: white;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #ff3333;
+}
+
+.save-btn {
+  background: #006600;
+  color: white;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #009900;
+}
+
+.load-btn {
+  background: #0066cc;
+  color: white;
+}
+
+.load-btn:hover:not(:disabled) {
+  background: #0099ff;
+}
+
+.emergency-btn {
+  background: #cc0000;
+  color: white;
+  font-weight: bold;
+}
+
+.emergency-btn:hover:not(:disabled) {
+  background: #ff0000;
+}
+
+.emergency-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.command-list {
+  flex: 1;
+  overflow-y: auto;
+  background: #000000;
+  max-height: calc(10 * 40px + 20px); /* 10 command items + padding */
+  min-height: 200px; /* Minimum height to show scrollbar when needed */
+}
+
+/* Custom scrollbar styling */
+.command-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.command-list::-webkit-scrollbar-track {
+  background: #1a0000;
+  border-radius: 4px;
+}
+
+.command-list::-webkit-scrollbar-thumb {
+  background: #cc0000;
+  border-radius: 4px;
+}
+
+.command-list::-webkit-scrollbar-thumb:hover {
+  background: #ff3333;
+}
+
+.empty-program {
+  padding: 25px 12px;
+  text-align: center;
+  color: #999999;
+  font-style: italic;
+  background: #1a0000;
+  font-size: 0.8rem;
+}
+
+.command-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #cc0000;
+  transition: background-color 0.2s;
+  background: #1a0000;
+}
+
+.command-item:hover {
+  background: #2d0000;
+}
+
+.command-item:last-child {
+  border-bottom: none;
+}
+
+.command-item.current-step {
+  background: #cc0000;
+  border-left: 3px solid #ffffff;
+  color: #ffffff;
+}
+
+.command-item.selected-line {
+  background: #660000;
+  border-left: 3px solid #ffcc00;
+  color: #ffffff;
+}
+
+.command-item.selected-line:hover {
+  background: #800000;
+}
+
+.command-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #ffffff;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.command-number {
+  background: #cc0000;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
+}
+
+.command-type {
+  background: #333333;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.command-axis {
+  background: #0066cc;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-distance {
+  background: #cc0000;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-position {
+  background: #cc0000;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-speed {
+  background: #ff6600;
+  color: #ffffff;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-wait {
+  background: #6600cc;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-delay {
+  background: #cc6600;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-loop {
+  background: #0066cc;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-endloop {
+  background: #cc0066;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+.command-message {
+  background: #cc6600;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.line-actions .move-btn,
+.line-actions .remove-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 600;
+}
+
+.line-actions .move-btn {
+  background: #333333;
+  color: white;
+}
+
+.line-actions .move-btn:hover:not(:disabled) {
+  background: #666666;
+}
+
+.line-actions .move-btn:disabled {
+  background: #1a0000;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.line-actions .remove-btn {
+  background: #cc0000;
+  color: white;
+}
+
+.line-actions .remove-btn:hover {
+  background: #ff3333;
+}
+
+.line-actions .edit-btn {
+  background: #0066cc;
+  color: white;
+}
+
+.line-actions .edit-btn:hover:not(:disabled) {
+  background: #3399ff;
+}
+.line-actions .insert-btn {
+  background: #006600;
+  color: white;
+}
+
+.line-actions .insert-btn:hover:not(:disabled) {
+  background: #009900;
+}
+.line-actions .insert-btn {
+  background: #009900;
+  color: white;
+}
+
+.line-actions .insert-btn:hover:not(:disabled) {
+  background: #33ff33;
+}
+
+.update-btn {
+  background: #0066cc;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 6px;
+}
+
+.update-btn:hover:not(:disabled) {
+  background: #3399ff;
+}
+
+.update-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #666666;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #999999;
+}
+
+.cancel-btn:disabled {
+  background: #333333;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-row select,
+  .form-row input {
+    min-width: auto;
+  }
+  
+  .program-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .program-actions {
+    justify-content: center;
+  }
+  
+  .command-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .command-actions {
+    margin-top: 4px;
+  }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1a0000;
+  border: 2px solid #cc0000;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  color: #ffffff;
+  text-align: center;
+}
+
+.modal-content h3 {
+  margin: 0 0 15px 0;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.modal-content p {
+  margin: 0 0 20px 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.continue-btn {
+  background: #00cc00;
+  color: white;
+}
+
+.continue-btn:hover {
+  background: #33ff33;
+}
+
+.pause-btn {
+  background: #ff6600;
+  color: white;
+}
+
+.pause-btn:hover {
+  background: #ff9933;
+} 

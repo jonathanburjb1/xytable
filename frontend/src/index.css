@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #ffffff;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a0000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cc0000;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff3333;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid #cc0000;
+  outline-offset: 2px;
+}
+
+/* Button focus styles */
+button:focus {
+  outline: 2px solid #cc0000;
+  outline-offset: 2px;
+}
+
+/* Input focus styles */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #cc0000;
+  outline-offset: 2px;
+}
+
+/* Link styles */
+a {
+  color: #cc0000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff3333;
+  text-decoration: underline;
+}
+
+/* Selection styles */
+::selection {
+  background: rgba(204, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(204, 0, 0, 0.3);
+  color: #ffffff;
+}
