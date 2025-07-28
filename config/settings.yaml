@@ -1,0 +1,42 @@
+# X-Y Table Configuration
+
+# Mesa Board Settings
+mesa:
+  ip: "192.168.1.121"
+  port: 27181
+  timeout: 5.0
+
+# Table Dimensions and Limits (in inches)
+table:
+  x_axis:
+    max_travel: 4.25  # 4.25 inches
+    min_position: 0.0
+    max_position: 4.25
+    default_speed: 8.0  # in/s
+    max_speed: 10.0      # in/s
+  y_axis:
+    max_travel: 3.125   # 3.125 inches
+    min_position: 0.0
+    max_position: 3.125
+    default_speed: 8.0  # in/s
+    max_speed: 10.0      # in/s
+
+# Movement Settings
+movement:
+  default_speed: 8.0    # in/s
+  emergency_stop_delay: 0.1  # seconds
+  position_tolerance: 0.01    # in
+
+# Network Settings
+network:
+  mesa_ip: "192.168.1.121"
+  pi_ip: "192.168.1.100"
+  interface: "eth0"
+  connection_name: "Wired connection 1"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/xytable.log"
+  max_size: "10MB"
+  backup_count: 5
