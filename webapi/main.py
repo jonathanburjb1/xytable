@@ -667,4 +667,36 @@ def home_axes():
     return {
         "status": "ok",
         "detail": "Homing started"
-    } 
+    }
+
+# --- IO Control Endpoint ---
+class SetIORequest(BaseModel):
+    io_name: str
+    state: bool
+
+    @validator('io_name')
+    def validate_io_name(cls, v):
+        if v not in ['down', 'start']:
+            raise ValueError('IO name must be "down" (mist) or "start" (flood)')
+        return v
+
+@app.post("/set_io")
+async def set_io_endpoint(req: SetIORequest):
+    """Set the state of an IO output (mist or flood coolant)"""
+    if not is_connected or not movement_controller:
+        raise HTTPException(status_code=503, detail="Mesa board not connected")
+    
+    try:
+        movement_controller.set_io(req.io_name, req.state)
+        
+        state_description = "ON" if req.state else "OFF"
+        
+        return {
+            "status": "ok",
+            "message": f"{req.io_name} set to {state_description}",
+            "io_name": req.io_name,
+            "state": req.state
+        }
+    except Exception as e:
+        logger.error(f"Error setting IO {req.io_name} to {req.state}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to set IO: {e}") 
