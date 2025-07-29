@@ -23,6 +23,7 @@ function App() {
   const jogKeyTimers = useRef({}); // { x: timer, y: timer }
   const jogActiveAxis = useRef({ x: false, y: false });
   const [homing, setHoming] = useState(false);
+  const [ioStates, setIoStates] = useState({ down: false, start: false });
 
   // Reconnection settings
   const RECONNECT_INTERVAL = 2000; // 2 seconds
@@ -479,6 +480,8 @@ function App() {
       if (response.ok) {
         const data = await response.json();
         console.log('Set IO successful:', data);
+        // Update local state to reflect the change
+        setIoStates(prev => ({ ...prev, [io_name]: state }));
       } else {
         const errorData = await response.json();
         throw new Error(errorData.detail || 'Set IO failed');
@@ -704,6 +707,26 @@ function App() {
               >
                 EMERGENCY STOP
               </button>
+            </div>
+
+            <div className="io-controls">
+              <h4>IO Controls</h4>
+              <div className="io-buttons">
+                <button 
+                  className={`io-btn ${ioStates.down ? 'active' : ''}`}
+                  onClick={() => setIO('down', !ioStates.down)}
+                  disabled={loading || !status.connected || isEstop}
+                >
+                  {ioStates.down ? 'DOWN ON' : 'DOWN OFF'}
+                </button>
+                <button 
+                  className={`io-btn ${ioStates.start ? 'active' : ''}`}
+                  onClick={() => setIO('start', !ioStates.start)}
+                  disabled={loading || !status.connected || isEstop}
+                >
+                  {ioStates.start ? 'START ON' : 'START OFF'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
